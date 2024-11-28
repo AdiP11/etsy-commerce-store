@@ -1,0 +1,60 @@
+
+/* General Styles */
+body {
+    font-family: 'Montserrat', sans-serif; /* Add Google Fonts */
+    line-height: 1.6;
+    background-color: #f9f9f9; /* Light neutral background */
+    color: #333; /* Dark text for readability */
+}
+
+header {
+    background: #f3f3f3; /* Neutral header */
+    color: #333;
+    border-bottom: 1px solid #ddd;
+}
+
+#cartButton {
+    background: #ff8c00; /* Etsy's signature orange */
+    color: white;
+    font-weight: bold;
+}
+
+#cartButton:hover {
+    background: #e67e00;
+}
+
+/* Product Container */
+#products-container {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Larger product cards */
+    gap: 1.5rem;
+}
+
+.product-card {
+    background: white;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    border: none;
+    padding: 1.5rem;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.product-card:hover {
+    transform: translateY(-5px); /* Subtle hover effect */
+}
+
+.product-card button {
+    background: #ff8c00;
+    font-weight: bold;
+}
+
+.product-card button:hover {
+    background: #e67e00;
+}
+
+/* Modal Updates */
+.modal-content {
+    font-family: 'Roboto', sans-serif;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}

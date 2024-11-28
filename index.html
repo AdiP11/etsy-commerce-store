@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple E-commerce Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>My Store</h1>
+            <button id="cartButton">
+                Cart (<span id="cartCount">0</span>)
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <div id="products-container"></div>
+    </main>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <h2>Shopping Cart</h2>
+            <div id="cartItems"></div>
+            <div id="cartTotal">Total: ₹0</div>
+            <button id="checkoutButton">Proceed to Payment</button>
+            <button id="closeCart">Close</button>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <h2>Payment</h2>
+            <p>Total Amount: ₹<span id="paymentAmount">0</span></p>
+            <div id="upiDetails">
+                <p>UPI ID: <span id="upiId">your-upi@bank</span></p>
+                <button id="payNow">Pay Now</button>
+            </div>
+            <button id="closePayment">Cancel</button>
+        </div>
+    </div>
+
+    <script src="products.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

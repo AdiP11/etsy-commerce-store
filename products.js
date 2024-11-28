@@ -1,0 +1,44 @@
+// Product data store
+const products = [
+    {
+        id: 1,
+        name: "Product 1",
+        price: 999,
+        image: "https://via.placeholder.com/150",
+        description: "Description for Product 1"
+    },
+    {
+        id: 2,
+        name: "Product 2",
+        price: 1499,
+        image: "https://via.placeholder.com/150",
+        description: "Description for Product 2"
+    },
+    {
+        id: 3,
+        name: "Product 3",
+        price: 2999,
+        image: "https://via.placeholder.com/150",
+        description: "Description for Product 3"
+    },
+    {
+        id: 4,
+        name: "Product 4",  
+        price: 299,
+        image: "https://via.placeholder.com/150",
+        description: "Its really good"
+    }
+];
+
+// Function to add new products
+function addNewProduct(name, price, image, description) {
+    const newProduct = {
+        id: products.length + 1,
+        name: name,
+        price: price,
+        image: image || "https://via.placeholder.com/150",
+        description: description
+    };
+    products.push(newProduct);
+    renderProducts(); // Re-render products after adding new one
+}
