@@ -2,10 +2,10 @@
 const products = [
     {
         id: 1,
-        name: "Product 1",
-        price: 999,
-        image: "https://via.placeholder.com/150",
-        description: "Description for Product 1"
+        name: "Hinges",
+        price: 599,
+        image: "./images/hinges.jpeg",
+        description: "SS hinges 4x14"
     },
     {
         id: 2,
