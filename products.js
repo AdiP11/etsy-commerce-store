@@ -9,9 +9,9 @@ const products = [
     },
     {
         id: 2,
-        name: "Product 2",
+        name: "Handles",
         price: 1499,
-        image: "https://via.placeholder.com/150",
+        image: "./images/handles.jpeg",
         description: "Description for Product 2"
     },
     {

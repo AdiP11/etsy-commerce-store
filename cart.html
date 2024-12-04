@@ -1,0 +1,43 @@
+<!-- cart.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart and Payments - My Store</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>My Store</h1>
+            <a href="index.html">Products</a>
+            <a href="home.html">About Us</a>
+        </nav>
+    </header>
+    <main>
+        <div id="cartModal" class="modal" style="display: block;">
+            <div class="modal-content">
+                <h2>Shopping Cart</h2>
+                <div id="cartItems"></div>
+                <div id="cartTotal">Total: ₹0</div>
+		<span id="cartCount">0</span>
+                <button id="checkoutButton">Proceed to Payment</button>
+                <button id="closeCart" onclick="window.location.href='index.html'">Continue Shopping</button>
+            </div>
+        </div>
+        <div id="paymentModal" class="modal">
+            <div class="modal-content">
+                <h2>Payment</h2>
+                <p>Total Amount: ₹<span id="paymentAmount">0</span></p>
+                <div id="upiDetails">
+                    <p>UPI ID: <span id="upiId">adithyp27@okaxis</span></p>
+                    <button id="payNow">Pay Now</button>
+                </div>
+                <button id="closePayment" onclick="window.location.href='index.html'">Cancel</button>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

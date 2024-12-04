@@ -1,5 +1,10 @@
 // Cart management
-let cart = [];
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+// Save cart to localStorage
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
 
 // DOM Elements
 const productsContainer = document.getElementById('products-container');
@@ -15,6 +20,10 @@ const payNowButton = document.getElementById('payNow');
 
 // Render products
 function renderProducts() {
+    if (!productsContainer || !products) {
+        console.error("Products container or products data not available");
+        return;
+    }
     productsContainer.innerHTML = products.map(product => `
         <div class="product-card">
             <img src="${product.image}" alt="${product.name}">
@@ -24,92 +33,75 @@ function renderProducts() {
             <button onclick="buyNow(${product.id})">Buy Now</button>
         </div>
     `).join('');
+    console.log("Products rendered successfully");
 }
 
 // Add to cart
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
-    cart.push(product);
-    updateCartCount();
+    if (!product) {
+        console.error("Product not found");
+        return;
+    }
+    cart.push(product); // Add product to cart
+    updateCartCount(); // Update cart count display
+    saveCart(); // Persist cart state to localStorage
     alert('Product added to cart!');
 }
+
+//render cart
+function renderCart() {
+    if (!cartItems) return; // Ensure the cart container exists on the page
+
+    // Generate the cart items
+    cartItems.innerHTML = cart.map(item => `
+        <div class="cart-item">
+            <span>${item.name}</span>
+            <span>₹${item.price}</span>
+            <button onclick="removeFromCart(${item.id})">Remove</button>
+        </div>
+    `).join('');
+
+    // Update the cart total
+    cartTotal.textContent = `Total: ₹${calculateTotal()}`;
+}
+
+//remove from cart
+function removeFromCart(productId) {
+    cart = cart.filter(item => item.id !== Number(productId)); // Filter out the item
+    updateCartCount(); // Update cart count
+    renderCart(); // Refresh cart display
+    saveCart(); // Persist updated cart
+}
+
 
 // Buy now
 function buyNow(productId) {
     const product = products.find(p => p.id === productId);
     cart = [product];
     updateCartCount();
+    saveCart();
     showPaymentModal();
 }
 
 // Update cart count
 function updateCartCount() {
-    cartCount.textContent = cart.length;
+    if (!cartCount) return; // Ensure cartCount exists
+    cartCount.textContent = cart.length; // Update the count
+    saveCart(); // Persist updated cart
 }
+
 
 // Calculate total
 function calculateTotal() {
     return cart.reduce((sum, item) => sum + item.price, 0);
 }
 
-// Render cart items
-function renderCart() {
-    cartItems.innerHTML = cart.map(item => `
-        <div class="cart-item">
-            <span>${item.name}</span>
-            <span>₹${item.price}</span>
-            <button onclick="removeFromCart('${item.id}')">Remove</button>
-        </div>
-    `).join('');
-    cartTotal.textContent = `Total: ₹${calculateTotal()}`;
-}
-
-// Remove from cart
-function removeFromCart(productId) {
-    cart = cart.filter(item => item.id !== productId);
-    updateCartCount();
-    renderCart();
-}
-
-// Show payment modal
-function showPaymentModal() {
-    paymentAmount.textContent = calculateTotal();
-    cartModal.style.display = 'none';
-    paymentModal.style.display = 'block';
-}
-
-// Event Listeners
-cartButton.onclick = () => {
-    cartModal.style.display = 'block';
-    renderCart();
-};
-
-document.getElementById('closeCart').onclick = () => {
-    cartModal.style.display = 'none';
-};
-
-document.getElementById('closePayment').onclick = () => {
-    paymentModal.style.display = 'none';
-};
-
-checkoutButton.onclick = showPaymentModal;
-
-payNowButton.onclick = () => {
-    // Implement UPI payment integration here
-    const amount = calculateTotal();
-    const upiId = document.getElementById('upiId').textContent;
-    
-    // Create UPI payment URL
-    const upiUrl = `upi://pay?pa=${upiId}&pn=Store&am=${amount}&cu=INR`;
-    
-    // Open UPI payment
-    window.location.href = upiUrl;
-    
-    // Clear cart after payment
-    cart = [];
-    updateCartCount();
-    paymentModal.style.display = 'none';
-};
-
 // Initialize
-renderProducts();
+if (productsContainer) {
+    renderProducts(); // Render products on the products page
+} else if (cartItems) {
+    renderCart(); // Render the cart on the cart page
+    updateCartCount(); // Update the cart count
+}
+
