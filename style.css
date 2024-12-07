@@ -1,22 +1,46 @@
-
 /* General Styles */
 body {
-    font-family: 'Montserrat', sans-serif; /* Add Google Fonts */
+    font-family: 'Montserrat', sans-serif;
     line-height: 1.6;
-    background-color: #f9f9f9; /* Light neutral background */
-    color: #333; /* Dark text for readability */
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
 }
 
+/* Header Styles */
 header {
-    background: #f3f3f3; /* Neutral header */
+    background: #f3f3f3;
     color: #333;
     border-bottom: 1px solid #ddd;
+    padding: 1rem;
 }
 
+header div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header nav a {
+    margin-left: 1rem;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Cart Button */
 #cartButton {
-    background: #ff8c00; /* Etsy's signature orange */
+    background: #ff8c00;
     color: white;
     font-weight: bold;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 #cartButton:hover {
@@ -25,8 +49,12 @@ header {
 
 /* Product Container */
 #products-container {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Larger product cards */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .product-card {
@@ -36,25 +64,148 @@ header {
     padding: 1.5rem;
     border-radius: 8px;
     transition: transform 0.2s ease-in-out;
+    text-align: center;
 }
 
-.product-card:hover {
-    transform: translateY(-5px); /* Subtle hover effect */
+.product-card img {
+    max-width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 4px;
 }
 
 .product-card button {
     background: #ff8c00;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem;
+    border-radius: 4px;
     font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
 }
 
 .product-card button:hover {
     background: #e67e00;
 }
 
-/* Modal Updates */
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
 .modal-content {
-    font-family: 'Roboto', sans-serif;
-    background: white;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 2rem;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Cart Styles */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding: 1rem 0;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.quantity-control button {
+    background: #f0f0f0;
+    border: 1px solid #ddd;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.quantity-control button:hover {
+    background: #e0e0e0;
+}
+
+.quantity-control span {
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+}
+
+#cartTotal {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: right;
+    margin: 1rem 0;
+}
+
+.cart-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+
+.cart-actions button,
+#payNow,
+#cancelPayment {
+    background: #ff8c00;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.cart-actions button:hover,
+#payNow:hover,
+#cancelPayment:hover {
+    background: #e67e00;
+}
+
+#cancelPayment {
+    background: #f44336;
+}
+
+#cancelPayment:hover {
+    background: #d32f2f;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    #products-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .modal-content {
+        margin: 25% auto;
+        width: 90%;
+        max-width: none;
+    }
+
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
 }
