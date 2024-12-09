@@ -20,6 +20,107 @@ const payNowButton = document.getElementById('payNow');
 const continueShoppingButton = document.getElementById('continueShopping');
 const proceedToPaymentButton = document.getElementById('proceedToPayment');
 
+// Add UPI payment functionality and cancel button behavior
+function initializePaymentModal() {
+    const paymentModal = document.getElementById('paymentModal');
+    const cartModal = document.getElementById('cartModal');
+    const payNowButton = document.getElementById('payNow');
+    const cancelPaymentButton = document.getElementById('cancelPayment');
+    const proceedToPaymentButton = document.getElementById('proceedToPayment');
+    const continueShoppingButton = document.getElementById('continueShopping');
+
+    // Proceed to Payment Button (from Cart Modal)
+    if (proceedToPaymentButton) {
+        proceedToPaymentButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPaymentModal();
+        });
+    }
+
+    // Pay Now Button (in Payment Modal)
+    if (payNowButton) {
+        payNowButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            const upiId = document.getElementById('upiId').textContent;
+            const totalAmount = calculateTotal();
+            
+            // Payment processing logic
+            if (navigator.userAgent.toLowerCase().includes('android')) {
+                // Android UPI intent
+                window.location.href = `upi://pay?pa=${upiId}&pn=MyStore&am=${totalAmount}&tn=Payment%20for%20your%20order`;
+            } else if (navigator.userAgent.toLowerCase().includes('iphone')) {
+                // iOS payment guidance
+                alert('Please use your preferred UPI app with this UPI ID: ' + upiId);
+            } else {
+                // Fallback for desktop or unsupported devices
+                alert('Please use your mobile device with UPI apps to complete the payment.\n\nUPI ID: ' + upiId + '\nTotal Amount: ₹' + totalAmount);
+            }
+            
+            // Clear cart after successful payment simulation
+            cart = [];
+            saveCart();
+            updateCartCount();
+            
+            // Redirect to home page or show confirmation
+            window.location.href = 'index.html';
+        });
+    }
+
+    // Cancel Payment Button
+    if (cancelPaymentButton) {
+        cancelPaymentButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Hide payment modal
+            if (paymentModal) {
+                paymentModal.style.display = 'none';
+            }
+            
+            // Show cart modal again if on cart page
+            if (cartModal) {
+                cartModal.style.display = 'block';
+            }
+        });
+    }
+
+    // Continue Shopping Button
+    if (continueShoppingButton) {
+        continueShoppingButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'index.html';
+        });
+    }
+}
+
+// Enhance the existing showPaymentModal function
+function showPaymentModal() {
+    const paymentModal = document.getElementById('paymentModal');
+    const cartModal = document.getElementById('cartModal');
+    const paymentAmount = document.getElementById('paymentAmount');
+
+    if (paymentModal && paymentAmount) {
+        // Hide cart modal
+        if (cartModal) {
+            cartModal.style.display = 'none';
+        }
+        
+        // Show payment modal
+        paymentModal.style.display = 'block';
+        paymentAmount.textContent = `₹${calculateTotal()}`;
+    }
+}
+
+// Ensure event listeners are set up after DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initializePaymentModal();
+    
+    // Render products or cart based on page
+    if (productsContainer) {
+        renderProducts();
+    } else if (cartItems) {
+        renderCart();
+        updateCartCount();
+    }
+});
 // Render products
 function renderProducts() {
     if (!productsContainer || !products) {
@@ -45,27 +146,22 @@ function addToCart(productId) {
         console.error("Product not found");
         return;
     }
-    
-    // Check if product already exists in cart
+
     const existingProductIndex = cart.findIndex(p => p.id === productId);
-    
     if (existingProductIndex !== -1) {
-        // Increment quantity if product exists
         cart[existingProductIndex].quantity = (cart[existingProductIndex].quantity || 1) + 1;
     } else {
-        // Add new product with quantity
-        cart.push({...product, quantity: 1});
+        cart.push({ ...product, quantity: 1 });
     }
-    
-    updateCartCount(); // Update cart count display
-    saveCart(); // Persist cart state to localStorage
-    
-    // If on cart page, re-render cart
+
+    updateCartCount();
+    saveCart();
+
     if (cartItems) {
         renderCart();
     }
-    
-    alert('Product added to cart!');
+
+    showToast('Product added to cart!'); // Subtle notification
 }
 
 // Render cart
@@ -150,6 +246,83 @@ function calculateTotal() {
     return cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
 }
 
+// Add UPI payment functionality and cancel button behavior
+function initializePaymentModal() {
+    const paymentModal = document.getElementById('paymentModal');
+    const payNowButton = document.getElementById('payNow');
+    const cancelPaymentButton = document.getElementById('cancelPayment');
+    const cartModal = document.getElementById('cartModal');
+    const upiDetails = document.getElementById('upiDetails');
+
+    // Ensure these elements exist before adding event listeners
+    if (payNowButton) {
+        payNowButton.addEventListener('click', () => {
+            // Open UPI payment options
+            const upiId = document.getElementById('upiId').textContent;
+            
+            // Check if the browser supports the UPI payment intent
+            if (navigator.userAgent.toLowerCase().includes('android')) {
+                // Android UPI intent
+                window.location.href = `upi://pay?pa=${upiId}&pn=MyStore&am=${calculateTotal()}&tn=Payment%20for%20your%20order`;
+            } else if (navigator.userAgent.toLowerCase().includes('iphone')) {
+                // iOS might require a different approach
+                alert('Please use your preferred UPI app with this UPI ID: ' + upiId);
+            } else {
+                // Fallback for desktop or unsupported devices
+                alert('Please use your mobile device with UPI apps to complete the payment.\n\nUPI ID: ' + upiId);
+            }
+        });
+    }
+
+    // Add cancel button functionality
+    if (cancelPaymentButton) {
+        cancelPaymentButton.addEventListener('click', () => {
+            // Hide payment modal
+            if (paymentModal) {
+                paymentModal.style.display = 'none';
+            }
+            
+            // Optionally, show cart modal again
+            if (cartModal) {
+                cartModal.style.display = 'block';
+            }
+        });
+    }
+
+    // If multiple cancel buttons exist (in different modals)
+    const cancelButtons = document.querySelectorAll('.cart-actions button:last-child');
+    cancelButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Close any open modals
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+            
+            // Redirect to products page
+            window.location.href = 'index.html';
+        });
+    });
+}
+
+// Enhance the existing showPaymentModal function
+function showPaymentModal() {
+    const paymentModal = document.getElementById('paymentModal');
+    const cartModal = document.getElementById('cartModal');
+    const paymentAmount = document.getElementById('paymentAmount');
+
+    if (paymentModal && paymentAmount) {
+        // Hide cart modal
+        if (cartModal) {
+            cartModal.style.display = 'none';
+        }
+        
+        // Show payment modal
+        paymentModal.style.display = 'block';
+        paymentAmount.textContent = calculateTotal();
+    }
+}
+
 // Event listeners for cart page buttons
 if (proceedToPaymentButton) {
     proceedToPaymentButton.addEventListener('click', showPaymentModal);
@@ -161,13 +334,8 @@ if (continueShoppingButton) {
     });
 }
 
-// Show payment modal
-function showPaymentModal() {
-    if (paymentModal && paymentAmount) {
-        paymentModal.style.display = 'block';
-        paymentAmount.textContent = calculateTotal();
-    }
-}
+// Initialize payment modal functionality
+document.addEventListener('DOMContentLoaded', initializePaymentModal);
 
 // Initialize
 if (productsContainer) {
@@ -175,4 +343,20 @@ if (productsContainer) {
 } else if (cartItems) {
     renderCart(); // Render the cart on the cart page
     updateCartCount(); // Update the cart count
+}
+
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.id = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 100);
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300); // Cleanup
+    }, 3000); // Display for 3 seconds
 }

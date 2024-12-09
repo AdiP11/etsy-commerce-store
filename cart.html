@@ -19,31 +19,33 @@
     </header>
 
     <main>
-        <div id="cartModal" class="modal" style="display: block;">
-            <div class="modal-content">
-                <h2>Shopping Cart</h2>
-                <div id="cartItems"></div>
-                <div id="cartTotal">Total: ₹0</div>
-                <span id="cartCount">0</span>
-                <div class="cart-actions">
-                    <button id="proceedToPayment">Proceed to Payment</button>
-                    <button id="continueShopping">Continue Shopping</button>
-                </div>
-            </div>
+       <div id="cartModal" class="modal" style="display: block;">
+    <div class="modal-content">
+        <h2>Shopping Cart</h2>
+        <div id="cartItems"></div>
+        <div id="cartTotal">Total: ₹0</div>
+        <span id="cartCount">0</span>
+        <div class="cart-actions">
+            <button id="proceedToPayment">Proceed to Payment</button>
+            <button id="continueShopping">Continue Shopping</button>
+            <button id="cancelCart">Cancel</button>
         </div>
+    </div>
+</div>
 
-        <div id="paymentModal" class="modal">
-            <div class="modal-content">
-                <h2>Payment</h2>
-                <p>Total Amount: ₹<span id="paymentAmount">0</span></p>
-                <div id="upiDetails">
-                    <p>UPI ID: adithyp27@okaxis</p>
-                    <button id="payNow">Pay Now</button>
-                </div>
-                <button id="cancelPayment">Cancel</button>
-            </div>
+<div id="paymentModal" class="modal">
+    <div class="modal-content">
+        <h2>Payment</h2>
+        <p>Total Amount: ₹<span id="paymentAmount">0</span></p>
+        <div id="upiDetails">
+            UPI ID: <span id="upiId">adithyp27@okaxis</span>
         </div>
-    </main>
+        <div class="cart-actions">
+            <button id="payNow">Pay Now</button>
+            <button id="cancelPayment">Cancel</button>
+        </div>
+    </div>
+</div>
 
     <script src="products.js"></script>
     <script src="script.js"></script>
