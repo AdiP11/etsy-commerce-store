@@ -2,7 +2,7 @@
 body {
     font-family: 'Montserrat', sans-serif;
     line-height: 1.6;
-    background-color: #f9f9f9;
+    background-color: #f3f7f9;
     color: #333;
     margin: 0;
     padding: 0;
@@ -10,7 +10,7 @@ body {
 
 /* Header Styles */
 header {
-    background: #f3f3f3;
+    background: #e6eef2;
     color: #333;
     border-bottom: 1px solid #ddd;
     padding: 1rem;
@@ -33,7 +33,7 @@ header nav a {
 
 /* Cart Button */
 #cartButton {
-    background: #ff8c00;
+    background: #f4a261;
     color: white;
     font-weight: bold;
     border: none;
@@ -44,7 +44,7 @@ header nav a {
 }
 
 #cartButton:hover {
-    background: #e67e00;
+    background: #e89d54;
 }
 
 /* Product Container */
@@ -58,13 +58,16 @@ header nav a {
 }
 
 .product-card {
-    background: white;
+    background: #edf2f5;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     border: none;
     padding: 1.5rem;
     border-radius: 8px;
     transition: transform 0.2s ease-in-out;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .product-card img {
@@ -75,7 +78,7 @@ header nav a {
 }
 
 .product-card button {
-    background: #ff8c00;
+    background: #f4a261;
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -87,7 +90,7 @@ header nav a {
 }
 
 .product-card button:hover {
-    background: #e67e00;
+    background: #e89d54;
 }
 
 /* Modal Styles */
@@ -104,7 +107,7 @@ header nav a {
 }
 
 .modal-content {
-    background-color: #fefefe;
+    background-color: #f7f9fc;
     margin: 15% auto;
     padding: 2rem;
     border-radius: 8px;
@@ -121,6 +124,21 @@ header nav a {
     padding: 1rem 0;
 }
 
+.cart-item button {
+    background: #f4a261;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.cart-item button:hover {
+    background: #e89d54;
+}
+
 .quantity-control {
     display: flex;
     align-items: center;
@@ -128,7 +146,7 @@ header nav a {
 }
 
 .quantity-control button {
-    background: #f0f0f0;
+    background: #e6eef2;
     border: 1px solid #ddd;
     width: 30px;
     height: 30px;
@@ -140,7 +158,7 @@ header nav a {
 }
 
 .quantity-control button:hover {
-    background: #e0e0e0;
+    background: #d9e3ea;
 }
 
 .quantity-control span {
@@ -165,7 +183,7 @@ header nav a {
 .cart-actions button,
 #payNow,
 #cancelPayment {
-    background: #ff8c00;
+    background: #f4a261;
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -178,15 +196,15 @@ header nav a {
 .cart-actions button:hover,
 #payNow:hover,
 #cancelPayment:hover {
-    background: #e67e00;
+    background: #e89d54;
 }
 
 #cancelPayment {
-    background: #f44336;
+    background: #e76f51;
 }
 
 #cancelPayment:hover {
-    background: #d32f2f;
+    background: #d45a41;
 }
 
 /* Responsive Adjustments */
@@ -209,6 +227,7 @@ header nav a {
         gap: 0.5rem;
     }
 }
+
 #about-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -218,15 +237,19 @@ header nav a {
     margin: 0 auto;
     text-align: center;
 }
+
 .about-card {
-    background: white;
+    background: #edf2f5;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     padding: 1.5rem;
     transition: transform 0.2s ease-in-out;
 }
+
 .about-card:hover {
     transform: scale(1.05);
+}
+
 #toast {
     visibility: hidden;
     min-width: 250px;
@@ -248,6 +271,4 @@ header nav a {
 #toast.show {
     visibility: visible;
     opacity: 1;
-}
-
 }
