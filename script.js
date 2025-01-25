@@ -360,3 +360,161 @@ function showToast(message) {
         setTimeout(() => toast.remove(), 300); // Cleanup
     }, 3000); // Display for 3 seconds
 }
+// Add customer information and order history management
+let customerInfo = {};
+let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
+
+// Function to render customer information form
+function renderCustomerInfoForm() {
+    const customerInfoModal = document.createElement('div');
+    customerInfoModal.id = 'customerInfoModal';
+    customerInfoModal.className = 'modal';
+    customerInfoModal.innerHTML = `
+        <div class="modal-content">
+            <h2>Customer Information</h2>
+            <form id="customerInfoForm">
+                <input type="text" id="fullName" placeholder="Full Name" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="tel" id="phone" placeholder="Phone Number" required>
+                <textarea id="address" placeholder="Delivery Address" required></textarea>
+                <div class="cart-actions">
+                    <button type="submit">Proceed to Payment</button>
+                </div>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(customerInfoModal);
+
+    const customerInfoForm = document.getElementById('customerInfoForm');
+    customerInfoForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        customerInfo = {
+            fullName: document.getElementById('fullName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            address: document.getElementById('address').value
+        };
+
+        customerInfoModal.style.display = 'none';
+        showPaymentModal();
+    });
+
+    customerInfoModal.style.display = 'block';
+}
+
+// Modify payment process to save order
+function saveOrder() {
+    const order = {
+        id: Date.now(),
+        customer: customerInfo,
+        items: cart,
+        total: calculateTotal(),
+        date: new Date().toISOString()
+    };
+
+    orderHistory.push(order);
+    localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+}
+
+// Function to display order history
+function displayOrderHistory() {
+    const orderHistoryContent = document.getElementById('orderHistoryContent');
+    if (!orderHistoryContent) return;
+
+    if (orderHistory.length === 0) {
+        orderHistoryContent.innerHTML = '<p>No order history found.</p>';
+        return;
+    }
+
+    orderHistoryContent.innerHTML = orderHistory.map(order => `
+        <div class="order-entry">
+            <h3>Order #${order.id}</h3>
+            <p>Date: ${new Date(order.date).toLocaleString()}</p>
+            <div class="customer-details">
+                <strong>Customer:</strong> ${order.customer.fullName}<br>
+                <strong>Email:</strong> ${order.customer.email}<br>
+                <strong>Phone:</strong> ${order.customer.phone}<br>
+                <strong>Address:</strong> ${order.customer.address}
+            </div>
+            <div class="order-items">
+                ${order.items.map(item => `
+                    <div>
+                        ${item.name} - Qty: ${item.quantity} - ₹${item.price * item.quantity}
+                    </div>
+                `).join('')}
+            </div>
+            <strong>Total: ₹${order.total}</strong>
+        </div>
+    `).join('');
+}
+
+// Modify existing payment button logic
+const originalPayNowButtonLogic = payNowButton ? payNowButton.onclick : null;
+if (payNowButton) {
+    payNowButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        saveOrder();
+        
+        // Existing payment logic
+        const upiId = document.getElementById('upiId').textContent;
+        const totalAmount = calculateTotal();
+        
+        if (navigator.userAgent.toLowerCase().includes('android')) {
+            window.location.href = `upi://pay?pa=${upiId}&pn=MyStore&am=${totalAmount}&tn=Payment%20for%20your%20order`;
+        } else {
+            alert('Please use your mobile device with UPI apps to complete the payment.');
+        }
+        
+        cart = [];
+        saveCart();
+        updateCartCount();
+        
+        window.location.href = 'index.html';
+    });
+}
+
+// Modify proceed to payment to show customer info form
+if (proceedToPaymentButton) {
+    proceedToPaymentButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        renderCustomerInfoForm();
+    });
+}
+
+// Add event listener for order history (if page exists)
+document.addEventListener('DOMContentLoaded', () => {
+    const orderHistoryContent = document.getElementById('orderHistoryContent');
+    if (orderHistoryContent) {
+        displayOrderHistory();
+    }
+});
+
+// Existing payment modal enhancement
+function showPaymentModal() {
+    const paymentModal = document.getElementById('paymentModal');
+    const cartModal = document.getElementById('cartModal');
+    const paymentAmount = document.getElementById('paymentAmount');
+
+    if (paymentModal && paymentAmount) {
+        // Hide cart modal
+        if (cartModal) {
+            cartModal.style.display = 'none';
+        }
+        
+        // Show payment modal
+        paymentModal.style.display = 'block';
+        paymentAmount.textContent = calculateTotal();
+
+        // Add customer details to payment modal
+        const customerDetailsContainer = document.getElementById('customerDetails');
+        if (customerDetailsContainer) {
+            customerDetailsContainer.innerHTML = `
+                <h3>Customer Details</h3>
+                <p><strong>Name:</strong> ${customerInfo.fullName}</p>
+                <p><strong>Email:</strong> ${customerInfo.email}</p>
+                <p><strong>Phone:</strong> ${customerInfo.phone}</p>
+                <p><strong>Address:</strong> ${customerInfo.address}</p>
+            `;
+        }
+    }
+}
