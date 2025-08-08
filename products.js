@@ -16,9 +16,9 @@ const products = [
     },
     {
         id: 3,
-        name: "Product 3",
-        price: 2999,
-        image: "https://via.placeholder.com/150",
+        name: "Ebco Soft Close Hinges",
+        price: 280,
+        image: ".images/ebco soft hinges.jpeg",
         description: "Description for Product 3"
     },
     {
