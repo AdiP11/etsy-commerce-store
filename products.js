@@ -28,6 +28,12 @@ const products = [
         image: "https://via.placeholder.com/150",
         description: "Its really good"
     }
+    products.push({
+    id: products.length + 1,
+    name: "New Product",
+    price: 1999,
+    image: "new-product-image.jpg",
+    description: "Product description"
 ];
 
 // Function to add new products
