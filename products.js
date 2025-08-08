@@ -18,7 +18,7 @@ const products = [
         id: 3,
         name: "Ebco Soft Close Hinges",
         price: 280,
-        image: ".images/ebco soft hinges.jpeg",
+        image: ".images/ebco.jpeg",
         description: "Description for Product 3"
     },
     {
